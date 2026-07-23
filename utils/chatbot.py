@@ -22,12 +22,21 @@ MATCH_THRESHOLD = 0.15  # below this similarity, treat as "no good match"
 MARGIN_THRESHOLD = 1.15  # top match must beat the runner-up by at least this ratio
 
 SUGGESTED_QUESTIONS = [
+    "What is NeoCare?",
     "How accurate is the model?",
-    "What features matter most to the prediction?",
+    "Why was Random Forest chosen?",
+    "How does the prediction work?",
+    "Which features affect prediction?",
+    "What dataset was used?",
+    "What preprocessing was performed?",
     "What's a normal oxygen saturation for a newborn?",
     "What counts as a fever in a newborn?",
+    "What is a normal heart rate?",
+    "What is a normal body temperature?",
     "What should I do if my baby is flagged At Risk?",
     "How does the growth tracker work?",
+    "What is newborn health monitoring?",
+    "Can NeoCare replace a doctor?"
 ]
 
 
@@ -85,34 +94,3 @@ def answer_question(query: str) -> dict:
     }
 
 
-def answer_with_claude(query: str, api_key: str) -> str:
-    """
-    Optional: use the Anthropic API to phrase a more natural answer,
-    grounded strictly in this project's knowledge base (retrieval-
-    augmented generation). Only called if the user supplies their own
-    API key in the sidebar — never required for the chatbot to work.
-    """
-    import anthropic
-
-    chunks, vectorizer, matrix = _build_index()
-    query_vec = vectorizer.transform([query])
-    sims = cosine_similarity(query_vec, matrix)[0]
-    top_idx = sims.argsort()[-3:][::-1]
-    context = "\n\n".join(f"- {chunks[i]['content']}" for i in top_idx)
-
-    client = anthropic.Anthropic(api_key=api_key)
-    system_prompt = (
-        "You are the NeoCare app assistant. Answer ONLY using the context "
-        "provided below, which comes from this project's own dataset, "
-        "trained model, and care guide. If the context doesn't cover the "
-        "question, say so plainly and suggest the Care Guide page. Never "
-        "give a medical diagnosis — always point toward a pediatrician for "
-        "real concerns. Keep answers short and warm.\n\nContext:\n" + context
-    )
-    response = client.messages.create(
-        model="claude-sonnet-5",
-        max_tokens=400,
-        system=system_prompt,
-        messages=[{"role": "user", "content": query}],
-    )
-    return "".join(block.text for block in response.content if block.type == "text")
