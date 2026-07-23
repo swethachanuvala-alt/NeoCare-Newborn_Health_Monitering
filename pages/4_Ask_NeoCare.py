@@ -29,6 +29,40 @@ st.warning(
 USER_AVATAR = "🧑"
 BOT_AVATAR = "🩺"
 
+# ---- floating bot bubble anchored to the chat input, Snapchat-style ----
+st.markdown(
+    """
+    <style>
+    .neocare-bot-bubble {
+        position: fixed;
+        bottom: 78px;
+        left: 24px;
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.25);
+        z-index: 9999;
+        animation: neocare-bob 2.4s ease-in-out infinite;
+    }
+    @keyframes neocare-bob {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-5px); }
+    }
+    /* push chat input text so it doesn't sit under the bubble */
+    [data-testid="stChatInput"] textarea {
+        padding-left: 44px !important;
+    }
+    </style>
+    <div class="neocare-bot-bubble">🩺</div>
+    """,
+    unsafe_allow_html=True,
+)
+
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
     st.toast("NeoCare assistant is ready", icon="🩺")
