@@ -70,14 +70,14 @@ with col3:
     st.markdown(
         """
         <div class="nav-card">
-            <h3> 💬Newborn Guide</h3>
+            <h3> 🩺Newborn Guide</h3>
             <p>A chatbot that answers only from this project's own dataset, model, and
             care guidance — not a generic bot.</p>
         </div>
         """,
         unsafe_allow_html=True,
     )
-    st.page_link("pages/3_Newborn_Guide.py", label="Newborn Guide", icon="💬")
+    st.page_link("pages/3_Newborn_Guide.py", label="Newborn Guide", icon="🩺")
 
 col4, col5, col6 = st.columns(3)
 with col4:

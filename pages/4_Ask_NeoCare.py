@@ -5,11 +5,11 @@ import streamlit as st
 from utils.styles import inject_css, hero, footer
 from utils.chatbot import answer_question, SUGGESTED_QUESTIONS
 
-st.set_page_config(page_title="NeoCare · Ask NeoCare", page_icon="💬", layout="wide")
+st.set_page_config(page_title="NeoCare · Ask NeoCare", page_icon="🩺", layout="wide")
 inject_css()
 
 hero(
-    "💬 Ask NeoCare",
+    "🩺 Ask NeoCare",
     "Questions answered from this project's own notebook, dataset, and app — not a generic bot.",
 )
 
