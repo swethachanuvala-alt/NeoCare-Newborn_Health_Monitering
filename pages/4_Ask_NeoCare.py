@@ -1,7 +1,7 @@
 import streamlit as st
 
 from utils.styles import inject_css, hero, footer
-from utils.chatbot import answer_question, answer_with_claude, SUGGESTED_QUESTIONS
+from utils.chatbot import answer_question, SUGGESTED_QUESTIONS
 
 st.set_page_config(page_title="NeoCare · Ask NeoCare", page_icon="💬", layout="wide")
 inject_css()
@@ -18,14 +18,7 @@ with st.sidebar:
         "own training data, trained model stats, and care guidance — it won't "
         "make things up outside of that."
     )
-    st.markdown("---")
-    st.markdown("### Optional: richer answers")
-    st.caption(
-        "By default this runs fully offline. If you'd like more natural, "
-        "conversational phrasing, you can optionally provide your own "
-        "Anthropic API key below (never stored, used only for this session)."
-    )
-    api_key = st.text_input("Anthropic API key (optional)", type="password")
+    
 
 st.warning(
     "⚕️ This assistant shares general information only — it doesn't diagnose. "
@@ -58,13 +51,7 @@ if query:
 
     with st.chat_message("assistant"):
         with st.spinner("Thinking..."):
-            if api_key:
-                try:
-                    answer = answer_with_claude(query, api_key)
-                except Exception as e:
-                    result = answer_question(query)
-                    answer = result["answer"] + f"\n\n_(Fell back to offline mode: {e})_"
-            else:
+        
                 result = answer_question(query)
                 answer = result["answer"]
         st.markdown(answer)
